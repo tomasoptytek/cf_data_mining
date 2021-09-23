@@ -605,3 +605,16 @@ def label_encoder(input_dict):
 def dummy_classifier(input_dict):
     dummy = c.dummy_classifier(input_dict['strategy'])
     return {'dummy': dummy}
+
+
+def scikit_pca(input_dict):
+    from sklearn.decomposition import PCA
+
+    nc = int(input_dict['n_components'])
+    data = input_dict['dataset']
+    x = data['data']
+    x_new = PCA(n_components=nc).fit_transform(x)
+    data['data'] = x_new
+    data['feature_names'] = ['pca_' + str(i) for i in range(nc)]
+
+    return {'transformed_dataset': data}
